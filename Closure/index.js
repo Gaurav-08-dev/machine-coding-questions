@@ -1,21 +1,21 @@
 // closure examples
-function outer() {
-  var x = 10;
-  function inner() {
-    var y = 10;
-    return function innerinner() {
-      console.log(x, y);
-    };
-  }
-  // console.log(y)
-  return inner;
-}
+// function outer() {
+//   var x = 10;
+//   function inner() {
+//     var y = 10;
+//     return function innerinner() {
+//       console.log(x, y);
+//     };
+//   }
+//   // console.log(y)
+//   return inner;
+// }
 
 // outer()()();
 
 // closure interview question
 // function run() {
-//   for (var i = 1; i < 6; i++) {
+//   for (let i = 1; i < 6; i++) {
 //     function close(i) {
 //       setTimeout(() => {
 //         console.log(i);
@@ -25,7 +25,6 @@ function outer() {
 //   }
 // }
 // run();
-
 
 // function promisify(number, increase) {
 //   return new Promise((resolve) =>
@@ -81,9 +80,100 @@ function outer() {
 // c3.increment();
 // c3.decrement();
 
+// for (var a = 1; a <= 3; a++) {
+//   (
+//          function(index) { setTimeout(function() { console.log(index); }, a * 1000);
+//    })(a);
+// }
 
+// for (var i = 1; i <= 3; i++) {
 
-for (var i = 1; i <= 3; i++) {
- 
-    setTimeout(function() { console.log(i); }, i * 1000) ; 
+//     setTimeout(function() { console.log(i); }, i * 1000) ;
+// }
+
+// for (var i = 1, j = 1; i <= 3; i++, j++) {
+//   setTimeout(function() { alert(this); }.bind(i), j * 100); }
+
+// call method
+
+function isOdd(number) {
+  return number % 2;
 }
+
+function getOddNumbers() {
+  return Array.prototype.filter.call(arguments, isOdd);
+}
+
+// console.log(getOddNumbers(1,2,3,4,5,6))
+
+// ! apply method
+
+const person = {
+  firstName: "Gaurav",
+  lastName: "Singh",
+};
+
+function greet(person, message) {
+  return `${person}, ${this.firstName},${message}`;
+}
+
+// console.log(greet.apply(person, ["aayyye", "oooink"]));
+
+// ! function borrowing using apply method
+
+const computer = {
+  name: "hp",
+  isOn: false,
+
+  turnOn() {
+    this.isOn = true;
+    return `${this.name} is On`;
+  },
+
+  turnOff() {
+    this.isOn = false;
+    return `${this.name} is off`;
+  },
+};
+
+const server = {
+  name: "server",
+  isOn: false,
+};
+
+// console.log(computer.turnOn.apply(server));
+
+
+// ! Bind method
+
+
+const module = {
+  x: 42,
+  getX: function () {
+    return this.x;
+  },
+};
+
+const getxx=module.getX
+console.log(getxx())
+console.log(getxx.bind(module)())
+
+
+
+
+// ! other test questions
+
+
+let  x = true;
+let count=0;
+setTimeout(()=>{
+  x=false;
+},2000)
+
+
+// while(x){
+//   if(x){
+//    count++;
+//    console.log(count)  
+//   }
+// }
