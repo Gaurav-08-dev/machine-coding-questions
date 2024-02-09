@@ -94,7 +94,7 @@ const c3 = new count();
 // for (var i = 1, j = 1; i <= 3; i++, j++) {
 //   setTimeout(function() { alert(this); }.bind(i), j * 100); }
 
-// call method
+// ! call method
 
 function isOdd(number) {
   return number % 2;
@@ -143,9 +143,7 @@ const server = {
 
 // console.log(computer.turnOn.apply(server));
 
-
 // ! Bind method
-
 
 const module = {
   x: 42,
@@ -154,26 +152,63 @@ const module = {
   },
 };
 
-const getxx=module.getX
-console.log(getxx())
-console.log(getxx.bind(module)())
-
-
-
+const getxx = module.getX;
+// console.log(getxx());
+// console.log(getxx.bind(module)());
 
 // ! other test questions
 
-
-let  x = true;
-let count=0;
-setTimeout(()=>{
-  x=false;
-},2000)
-
+let x = true;
+let counts = 0;
+setTimeout(() => {
+  x = false;
+}, 2000);
 
 // while(x){
 //   if(x){
 //    count++;
-//    console.log(count)  
+//    console.log(count)
 //   }
 // }
+
+// ! polyfill for map
+
+const arr = [1, 2, 4, 5, 6];
+
+Array.prototype.myMap = function (logic) {
+  const output = [];
+  for (let i = 0; i < this.length; i++) {
+    output.push(logic(this[i]));
+  }
+  return output;
+};
+
+// console.log(
+//   arr.myMap((item) => {
+//     return item * 2;
+//   })
+// );
+
+// ! reduce method
+// console.log(
+//   arr.reduce((acc, counter) => {
+//     acc = acc > counter ? acc : counter;
+//     return acc;
+//   }, 0)
+// );
+
+const users = [
+  {f:'z',l:'d',a:1},
+  {f:'q',p:'g',a:2},
+  {f:'p',o:'n',a:3},
+  {f:'x',y:'m',a:4},
+]
+
+
+// console.log(users.reduce((acc,curr)=>{
+//   if(curr.a < 4){
+//     acc.push(curr.f)
+//   }
+
+//   return acc;
+// },[]))
