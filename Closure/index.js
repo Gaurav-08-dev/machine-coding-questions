@@ -171,6 +171,16 @@ setTimeout(() => {
 //   }
 // }
 
+// setTimeout(function () {
+//   alert('gorilla');
+//   setTimeout(function () {
+//     alert('classical inheritance');
+//   }, 0);
+//   alert('drumroll');
+// }, 0);
+
+// alert('banana');
+
 // ! polyfill for map
 
 const arr = [1, 2, 4, 5, 6];
@@ -198,12 +208,11 @@ Array.prototype.myMap = function (logic) {
 // );
 
 const users = [
-  {f:'z',l:'d',a:1},
-  {f:'q',p:'g',a:2},
-  {f:'p',o:'n',a:3},
-  {f:'x',y:'m',a:4},
-]
-
+  { f: "z", l: "d", a: 1 },
+  { f: "q", p: "g", a: 2 },
+  { f: "p", o: "n", a: 3 },
+  { f: "x", y: "m", a: 4 },
+];
 
 // console.log(users.reduce((acc,curr)=>{
 //   if(curr.a < 4){
@@ -212,3 +221,63 @@ const users = [
 
 //   return acc;
 // },[]))
+
+// ! Promise APIs
+
+// const p1= new Promise((resolve, reject) => {
+//   // setTimeout(()=>resolve("P1 success"), 1000)
+//   setTimeout(()=>reject("P1 fail"), 1000)
+// })
+// const p2= new Promise((resolve, reject) => {
+//   // setTimeout(()=>resolve("P2 success"), 3000)
+//   setTimeout(()=>reject("P2 fail"), 3000)
+// })
+// const p3= new Promise((resolve, reject) => {
+//   // setTimeout(()=>resolve("P3 success"), 2000)
+//   setTimeout(()=>reject("P3 fail"), 2000)
+// })
+
+// Promise.any([p1,p2,p3]).then(res => {
+//   console.log(res)
+// })
+// .catch(err => {
+//   console.log(err)
+//   console.log(err.errors)
+// })
+
+// ! async await
+
+// const p = new Promise((resolve) => {
+//   setTimeout(() => {
+//     resolve("Promise resolved")
+//   }, 10000);
+// })
+
+// const p2 = new Promise((resolve,reject) =>
+// setTimeout(() => {
+//   resolve("Promise2 resolved")
+// }, 20000)
+// )
+
+// async function getData(){
+//   return "AAyyyeee"
+// }
+
+// const data = getData();
+// console.log(data)
+// data.then(res => console.log(res))
+
+// ! using async await
+async function handlePromise() {
+  console.log("start");
+  const res = await p;
+  console.log("res1");
+  console.log(res);
+
+  const res2 = await p2;
+  console.log("res2");
+
+  console.log(res2);
+}
+
+// handlePromise()
