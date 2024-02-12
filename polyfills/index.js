@@ -86,7 +86,7 @@ Function.prototype.myCall = function (context, ...args) {
   return result;
 };
 
-console.log(printName.myCall(person, "Hey"));
+// console.log(printName.myCall(person, "Hey"));
 
 // ! apply
 Function.prototype.myApply = function (context, args) {
@@ -100,7 +100,7 @@ Function.prototype.myApply = function (context, args) {
   return result;
 };
 
-console.log(printName.apply(person, ["hey", "haan Bhai", "p"]));
+// console.log(printName.apply(person, ["hey", "haan Bhai", "p"]));
 
 // ! bind
 Function.prototype.myBind = function (...args) {
@@ -113,7 +113,7 @@ Function.prototype.myBind = function (...args) {
 };
 
 const bindedFunc = printName.myBind(person, "hi");
-console.log(bindedFunc("hi"));
+// console.log(bindedFunc("hi"));
 
 // ! Interview QUestion
 
@@ -259,7 +259,7 @@ const findNodeValue = () => {
   return getValueFromPath(path, rootB);
 };
 
-console.log(findNodeValue());
+// console.log(findNodeValue());
 
 // ! Flatten an Array
 
@@ -295,4 +295,101 @@ const flatUsingReduce = function (multiArray) {
   }, []);
 };
 
-console.log(flatUsingReduce(multiArray));
+// console.log(flatUsingReduce(multiArray));
+
+// ! Flatten Object
+
+const obj = {
+  A: "12",
+  B: 23,
+  C: {
+    P: 23,
+    O: {
+      L: 56,
+    },
+    Q: [1, 2],
+  },
+};
+
+const flattenObject = (obj, parent) => {
+  const output = {};
+
+  const generateFlatObject = (obj, parent) => {
+    for (let key in obj) {
+      const newParent = parent + key;
+      const val = obj[key];
+
+      if (typeof val === "object") {
+        generateFlatObject(val, newParent + ".");
+      } else {
+        output[newParent] = val;
+      }
+    }
+  };
+
+  generateFlatObject(obj, parent);
+  return output;
+};
+
+// console.log(flattenObject(obj, ""));
+
+// ! Promise.all polyfill
+
+const p1 = new Promise((resolve, reject) => {
+  //   setTimeout(() => resolve("P1 success"), 1000);
+  //   setTimeout(() => reject("P1 fail"), 1000);
+});
+const p2 = new Promise((resolve, reject) => {
+  //   setTimeout(() => resolve("P2 success"), 3000);
+  // setTimeout(() => reject("P2 fail"), 3000);
+});
+const p3 = new Promise((resolve, reject) => {
+  //   setTimeout(() => resolve("P3 success"), 2000);
+  // setTimeout(() => reject("P3 fail"), 2000);
+});
+
+Promise.myAll = function (args) {
+  return new Promise((resolve, reject) => {
+    const output = [];
+    let total = 0;
+    args.forEach((promise, index) => {
+      promise
+        .then((data) => {
+          output[index] = data;
+          total += 1;
+          if (total === args.length) resolve(output);
+        })
+        .catch((err) => reject(err));
+    });
+  });
+};
+
+// Promise.myAll([p1, p2, p3])
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log(err));
+
+// ! Create a curry function that accepts 5 arguments
+
+const ARGS_LEN = 5;
+
+const sum = (...args) => {
+  if (args.length === ARGS_LEN)
+    return args.reduce((initialVal, currentVal) => initialVal + currentVal);
+  else {
+    const recursiveFn = (...args2) => {
+      args = args.concat(args2);
+
+      if (args.length === ARGS_LEN) {
+        return args.reduce((initialVal, currentVal) => initialVal + currentVal);
+      } else recursiveFn;
+    };
+
+    return recursiveFn;
+  }
+};
+
+console.log(sum(1,2,3,4,5))
+console.log(sum((1),2,3,4,5))
+console.log(sum((1),(2),(3),(4),(5)))
+
+
