@@ -24,7 +24,7 @@ Array.prototype.myMap = function (logic) {
 // );
 
 // ! Filter
-
+//
 Array.prototype.myFilter = function (logic) {
   const output = [];
   for (let i = 0; i < this.length; i++) {
@@ -388,8 +388,45 @@ const sum = (...args) => {
   }
 };
 
-console.log(sum(1,2,3,4,5))
-console.log(sum((1),2,3,4,5))
-console.log(sum((1),(2),(3),(4),(5)))
+// console.log(sum(1,2,3,4,5))
+// console.log(sum((1),2,3,4,5))
+// console.log(sum((1),(2),(3),(4),(5)))
 
+// ! curry function that returns sum of previous values
 
+const prevSumCurry = () => {
+  let sum = 0;
+  return function (args) {
+    return (sum = sum + args);
+  };
+};
+
+const sums = prevSumCurry();
+console.log(sums(1));
+console.log(sums(1));
+console.log(sums(5));
+
+// ! polyfill of split
+
+String.prototype.customSplit = function (delimiter) {
+  let output = [];
+
+  if (delimiter === "") return Array.from(this);
+
+  const startSplit = (str, i) => {
+    if (i >= str.length) return;
+
+    const index = str.indexOf(delimiter);
+    if (index >= 0) {
+      output.push(str.substring(0, index));
+      startSplit(str.substring(index + delimiter.length),index + delimiter.length)
+    } else {
+        output.push(str)
+    }
+  };
+  startSplit(this, 0);
+
+  return output;
+};
+
+console.log("  gau rav jfsdk jk ravldsfj sdl ".customSplit(""));
