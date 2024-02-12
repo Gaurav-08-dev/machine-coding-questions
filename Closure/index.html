@@ -4,9 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="../polyfills/index.js"></script>
+    <script src="../polyfills/index.js" defer></script>
   </head>
   <body>
-    <input title="textINput" type="text" onkeyup="debouncedGetData('test')" />
+    <div id="rootA">
+        <div>
+            <div>
+                <div></div>
+                <div>
+                    <div></div>
+                    <div>
+                        <div id="nodeA">Node A Value</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </div>
+
+    <div id="rootB">
+        <div>
+            <div>
+                <div></div>
+                <div>
+                    <div></div>
+                    <div>
+                        <div>Node B Value</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </div>
   </body>
+
 </html>

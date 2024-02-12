@@ -154,7 +154,7 @@ let func = (obj, parent, finalObject) => {
 let counter = 0;
 const getData = (item) => {
   counter++;
-  console.log("Typing", counter,item );
+  console.log("Typing", counter, item);
 };
 
 const debounce = (func, delay) => {
@@ -178,12 +178,121 @@ const throttle = (func, delay) => {
   let isthrottle;
 
   return function (args) {
-    if(!isthrottle){
-        func.apply(this,[args]);
-        isthrottle=true;
-        setTimeout(()=> isthrottle=false ,delay)
+    if (!isthrottle) {
+      func.apply(this, [args]);
+      isthrottle = true;
+      setTimeout(() => (isthrottle = false), delay);
+    }
+  };
+};
+
+// const debouncedGetData = throttle(getData,1000)
+
+// ! Memoized function
+
+const memoize = function (fn) {
+  const cache = {};
+  return (...args) => {
+    const argsToString = JSON.stringify(args);
+
+    if (argsToString in cache) {
+      return cache[argsToString];
+    } else {
+      console.log(`computing value for ${argsToString}`);
+      const result = fn.apply(this, args);
+      cache[argsToString] = result;
+      return result;
+    }
+  };
+};
+
+const addTwoNumbers = (a, b) => {
+  return a + b;
+};
+
+// console.log(addTwoNumbers(1, 2));
+
+const memoizedAdd = memoize(addTwoNumbers);
+// console.log(memoizedAdd(1, 2));
+
+// ! recursive memoize
+
+const factorial = memoize((val) => {
+  if (val === 0) return 1;
+  return val * factorial(val - 1);
+});
+
+// console.log(factorial(6));
+// console.log(factorial(5));
+
+// ! DOM Finder
+
+const findPathFromChildToParent = (parent, child) => {
+  // debugger
+  let currentNode = child;
+  const path = [];
+  while (currentNode !== parent) {
+    const parentElement = currentNode.parentElement;
+    const arrayOfChildren = Array.from(parentElement.children);
+    path.push(arrayOfChildren.indexOf(currentNode));
+    currentNode = parentElement;
+  }
+
+  return path;
+};
+
+const getValueFromPath = (path, parent) => {
+  let currentNode = parent;
+
+  while (path.length) {
+    currentNode = currentNode.children[path.pop()];
+  }
+
+  return currentNode.innerText;
+};
+
+const findNodeValue = () => {
+  const rootA = document.getElementById("rootA");
+  const rootB = document.getElementById("rootB");
+  const nodeA = document.getElementById("nodeA");
+  const path = findPathFromChildToParent(rootA, nodeA);
+  return getValueFromPath(path, rootB);
+};
+
+console.log(findNodeValue());
+
+// ! Flatten an Array
+
+const multiArray = [
+  [[1, [1, 1]], 2, 3],
+  ["a", 5],
+];
+
+const output = [];
+const flat = (multiArray) => {
+  for (let i = 0; i < multiArray.length; i++) {
+    if (Array.isArray(multiArray[i])) {
+      flat(multiArray[i]);
+    } else {
+      output.push(multiArray[i]);
     }
   }
 };
 
-const debouncedGetData = throttle(getData,1000)
+// flat(multiArray);
+
+// ! using array.reduce
+
+const flatUsingReduce = function (multiArray) {
+  return multiArray.reduce((acc, currentVal) => {
+    if (Array.isArray(currentVal)) {
+      acc = acc.concat(flatUsingReduce(currentVal));
+    } else {
+      acc.push(currentVal);
+    }
+
+    return acc;
+  }, []);
+};
+
+console.log(flatUsingReduce(multiArray));
