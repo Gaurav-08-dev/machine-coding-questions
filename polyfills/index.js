@@ -414,7 +414,7 @@ String.prototype.customSplit = function (delimiter) {
   if (delimiter === "") return Array.from(this);
 
   const startSplit = (str, i) => {
-    if (i >= str.length) return;
+    if (i >= this.length) return;
 
     const index = str.indexOf(delimiter);
     if (index >= 0) {
