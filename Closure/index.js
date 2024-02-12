@@ -281,3 +281,35 @@ async function handlePromise() {
 }
 
 // handlePromise()
+
+
+// ! Currying using bind method
+
+let multiply = function (x, y) {
+  return x * y;
+};
+
+let multiplyBy2 = multiply.bind(this, 2);
+// console.log(multiplyBy2(4));
+
+// ! Currying using closure
+
+let multiplyClosure = function (x) {
+  return function (y) {
+    return x * y;
+  };
+};
+
+// console.log(multiplyClosure(2)(0))
+
+
+// ! Infinite Currying
+let sum = function(a){
+    return function (b) {
+
+        if(b) return sum(a+b);
+        return a;
+    }
+}
+
+// console.log(sum(1)(2)(3)(4)())

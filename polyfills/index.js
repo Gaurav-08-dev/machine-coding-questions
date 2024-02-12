@@ -115,33 +115,75 @@ Function.prototype.myBind = function (...args) {
 const bindedFunc = printName.myBind(person, "hi");
 console.log(bindedFunc("hi"));
 
-// ! Currying using bind method
+// ! Interview QUestion
 
-let multiply = function (x, y) {
-  return x * y;
+// ask about corner cases like if values are going to be string only
+let user = {
+  name: "Gaurav",
+  address: {
+    personal: {
+      city: "New Delhi",
+      area: "Dwarka",
+    },
+    office: {
+      city: "Gurgaon",
+      area: {
+        landmark: "Infosys",
+      },
+    },
+  },
 };
 
-let multiplyBy2 = multiply.bind(this, 2);
-console.log(multiplyBy2(4));
+let finalObject = {};
 
-// ! Currying using closure
+let func = (obj, parent, finalObject) => {
+  for (let key in obj) {
+    if (typeof obj[key] === "object") {
+      func(obj[key], parent + "_" + key, finalObject);
+    } else {
+      finalObject[parent + "_" + key] = obj[key];
+    }
+  }
+};
 
-let multiplyClosure = function (x) {
-  return function (y) {
-    return x * y;
+// func(user,'user',finalObject)
+
+// console.log(finalObject)
+
+// ! Debouncing
+let counter = 0;
+const getData = (item) => {
+  counter++;
+  console.log("Typing", counter,item );
+};
+
+const debounce = (func, delay) => {
+  let timer;
+
+  return function (...args) {
+    const context = this;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = null;
+      func.apply(context, ...args);
+    }, delay);
   };
 };
 
-console.log(multiplyClosure(2)(0))
+// const debouncedGetData = debounce(getData,1000)
 
+// ! throttling
 
-// ! Infinite Currying
-let sum = function(a){
-    return function (b) {
+const throttle = (func, delay) => {
+  let isthrottle;
 
-        if(b) return sum(a+b);
-        return a;
+  return function (args) {
+    if(!isthrottle){
+        func.apply(this,[args]);
+        isthrottle=true;
+        setTimeout(()=> isthrottle=false ,delay)
     }
-}
+  }
+};
 
-console.log(sum(1)(2)(3)(4)())
+const debouncedGetData = throttle(getData,1000)
