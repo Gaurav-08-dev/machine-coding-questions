@@ -374,23 +374,29 @@ const ARGS_LEN = 5;
 
 const sum = (...args) => {
   if (args.length === ARGS_LEN)
-    return args.reduce((initialVal, currentVal) => initialVal + currentVal);
+    return args.reduce((initialVal, currentVal) => initialVal + currentVal, 0);
   else {
     const recursiveFn = (...args2) => {
       args = args.concat(args2);
-
       if (args.length === ARGS_LEN) {
-        return args.reduce((initialVal, currentVal) => initialVal + currentVal);
-      } else recursiveFn;
+        return args.reduce(
+          (initialVal, currentVal) => initialVal + currentVal,
+          0
+        );
+      } else {
+        return recursiveFn;
+      }
     };
-
     return recursiveFn;
   }
 };
 
-// console.log(sum(1,2,3,4,5))
-// console.log(sum((1),2,3,4,5))
-// console.log(sum((1),(2),(3),(4),(5)))
+// console.log(sum(1, 2, 3, 4, 5));
+// console.log(sum(1, 2, 3, 4)(5));
+// console.log(sum(1)(2)(3)(4)(5));
+// console.log(sum(1, 2, 3)(4, 5));
+// console.log(sum(1, 2)(3, 4, 5));
+// console.log(sum(1)(2, 3, 4, 5));
 
 // ! curry function that returns sum of previous values
 
@@ -402,9 +408,9 @@ const prevSumCurry = () => {
 };
 
 const sums = prevSumCurry();
-console.log(sums(1));
-console.log(sums(1));
-console.log(sums(5));
+// console.log(sums(1));
+// console.log(sums(1));
+// console.log(sums(5));
 
 // ! polyfill of split
 
@@ -419,9 +425,12 @@ String.prototype.customSplit = function (delimiter) {
     const index = str.indexOf(delimiter);
     if (index >= 0) {
       output.push(str.substring(0, index));
-      startSplit(str.substring(index + delimiter.length),index + delimiter.length)
+      startSplit(
+        str.substring(index + delimiter.length),
+        index + delimiter.length
+      );
     } else {
-        output.push(str)
+      output.push(str);
     }
   };
   startSplit(this, 0);
@@ -429,4 +438,184 @@ String.prototype.customSplit = function (delimiter) {
   return output;
 };
 
-console.log("  gau rav jfsdk jk ravldsfj sdl ".customSplit(""));
+// console.log("  gau rav jfsdk jk ravldsfj sdl ".customSplit(""));
+
+// ! OUTPUT BASED QUESTIONS FOR PROMISES
+
+// * Q1 will it work twice?
+// var p = new Promise((resolve,reject) => {
+//     reject(Error("It failed"))
+// })
+
+// p.catch(e => console.log(e.message))
+// p.catch(e => console.log(e.message))
+
+// * Q2
+// var q= new Promise((resolve,reject)=> {
+//     reject(Error("The failure"))
+// }).catch(err => console.log(err.message))
+// .then(err => console.log(err))
+
+// * Q3
+
+// new Promise((resolve, reject) => {
+//   resolve("It works");
+// })
+//   .then(() => {
+//     throw Error("Oh wait !! it doesnt");
+//   })
+//   .catch((err) => {
+//     return "LOL!! Actually it does work";
+//   })
+//   .then((message) => console.log(message));
+
+// * Q4
+
+// Promise.resolve("Success!!")
+//   .then((data) => {
+//     return data.toUpperCase();
+//   })
+//   .then((data) => console.log(data));
+
+// * Q5
+
+// Promise.resolve("success")
+//   .then(() => {
+//     throw Error("Oh noooooooo");
+//   })
+//   .catch((err) => {
+//     return "actually it worked";
+//   })
+//   .then((data) => {
+//     throw new Error("It Failed");
+//   })
+//   .catch((err) => console.log(err.message));
+
+// * Q6
+
+// const promise = new Promise((res) => res(2));
+// promise
+//   .then((v) => {
+//     console.log(v);
+//     return v * 2;
+//   })
+//   .then((v) => {
+//     console.log(v);
+//     return v * 2;
+//   })
+//   .finally((v) => {
+//     console.log(v, "finally");
+//     return v * 2;
+//   })
+//   .then((v) => {
+//     console.log(v);
+//   });
+
+// ! this keyword
+
+function User() {
+  (this.name = "Gaurav Singh"), (this.score = 20);
+
+  this.sayUser = function () {
+    console.log(this.name);
+
+    innerFunction = () => {
+      console.log(this.name);
+    };
+
+    innerFunction();
+  };
+}
+
+let name = new User();
+name.sayUser();
+
+// ! Task Schedulling
+
+const schedules = [
+  { id: "a", dependencies: ["b", "c"] },
+  { id: "b", dependencies: ["d"] }, // ! d
+  { id: "c", dependencies: ["e"] },
+  { id: "d", dependencies: [] },
+  { id: "e", dependencies: ["f"] }, // ! f
+  { id: "f", dependencies: [] },
+];
+
+const totalTasks = schedules.length;
+let totalTasksExecuted = 0;
+let currentTask = 0;
+
+const removeTaskFromDependencies = (taskId) => {
+  schedules.forEach((task) => {
+    const taskIndex = task.dependencies.indexOf(taskId);
+    if (taskIndex !== -1) {
+      task.dependencies.splice(taskIndex, 1);
+    }
+  });
+};
+const executeTasks = () => {
+  while (totalTasksExecuted < totalTasks) {
+    const task = schedules[currentTask];
+
+    if (!task.dependencies.length && !task.executed) {
+      console.log("Running Task", task.id);
+      task.executed = true;
+      totalTasksExecuted += 1;
+      removeTaskFromDependencies(task.id);
+    } else if (!task.visited) task.visited = 1;
+    else if (task.visited > totalTasks) {
+      console.log("Cycle Formed");
+      break;
+    } else task.visited += 1;
+
+    if (currentTask === totalTasks - 1) currentTask = 0;
+    else currentTask += 1;
+  }
+};
+
+// executeTasks()
+
+
+
+
+// ! Polyfill for SetTimeout
+
+function createSetTimeout(){
+  let timerId=0;
+  let timerMap={};
+
+
+  function mySetTimeout(callback,delay, ...args){
+    let id=timerId++;
+    timerMap[id] = true;
+
+    const start = Date.now()
+
+    function triggerCallback() {
+      if(!timerMap[id]) return;
+
+      if(Date.now() > start + delay){
+        callback.apply(this,args)
+      }
+      else{
+        requestIdleCallback(triggerCallback)
+      }
+    }
+    requestIdleCallback(triggerCallback)
+    return id;
+  }
+
+  function myClearTimeout(id){
+    delete timerMap[id]
+  }
+
+  return {mySetTimeout,myClearTimeout}
+}
+
+
+let {mySetTimeout,myClearTimeout} = createSetTimeout();
+
+console.log("Start")
+
+let timer = mySetTimeout((name)=>{console.log("Test",name)}, 1000,"Gaurav")
+console.log("End")
