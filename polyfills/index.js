@@ -575,47 +575,80 @@ const executeTasks = () => {
 
 // executeTasks()
 
-
-
-
 // ! Polyfill for SetTimeout
 
-function createSetTimeout(){
-  let timerId=0;
-  let timerMap={};
+function createSetTimeout() {
+  let timerId = 1;
+  let timerMap = {};
 
-
-  function mySetTimeout(callback,delay, ...args){
-    let id=timerId++;
+  function mySetTimeout(callback, delay, ...args) {
+    let id = timerId++;
     timerMap[id] = true;
 
-    const start = Date.now()
+    const start = Date.now();
 
     function triggerCallback() {
-      if(!timerMap[id]) return;
+      if (!timerMap[id]) return;
 
-      if(Date.now() > start + delay){
-        callback.apply(this,args)
-      }
-      else{
-        requestIdleCallback(triggerCallback)
+      if (Date.now() > start + delay) {
+        callback.apply(this, args);
+      } else {
+        requestIdleCallback(triggerCallback);
       }
     }
-    requestIdleCallback(triggerCallback)
+    requestIdleCallback(triggerCallback);
     return id;
   }
 
-  function myClearTimeout(id){
-    delete timerMap[id]
+  function myClearTimeout(id) {
+    delete timerMap[id];
   }
 
-  return {mySetTimeout,myClearTimeout}
+  return { mySetTimeout, myClearTimeout };
 }
 
+// let timer = mySetTimeout((name)=>{console.log("Test",name)}, 1000,"Gaurav")
 
-let {mySetTimeout,myClearTimeout} = createSetTimeout();
+// ! SetInterval polyfill
+let { mySetTimeout, myClearTimeout } = createSetTimeout();
 
-console.log("Start")
+function createSetInterval() {
+  let timerId = 1;
+  let timerMap = {};
+  let { mySetTimeout, myClearTimeout } = createSetTimeout();
 
-let timer = mySetTimeout((name)=>{console.log("Test",name)}, 1000,"Gaurav")
-console.log("End")
+  function mySetInterval(callback, delay, ...args) {
+    let id = timerId++;
+
+    function triggerCallback() {
+      timerMap[id] = mySetTimeout(function () {
+        callback(this, args);
+        if (timerMap[id]) triggerCallback();
+      }, delay);
+    }
+
+    triggerCallback();
+    return id;
+  }
+
+  function myClearInterval(id) {
+    myClearTimeout(id);
+    delete timerMap[id];
+  }
+
+  return { mySetInterval, myClearInterval };
+}
+
+let { mySetInterval, myClearInterval } = createSetInterval();
+
+console.log("Start");
+let count = 0;
+// let timer = mySetInterval(() => {
+//   console.log("Now");
+//   count++;
+//   if (count >= 2) myClearInterval(timer);
+// }, 1000);
+console.log("End");
+
+
+
