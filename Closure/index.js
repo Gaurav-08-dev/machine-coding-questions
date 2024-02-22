@@ -15,7 +15,7 @@ function outer() {
 
 // closure interview question
 function run() {
-  for (let i = 1; i < 6; i++) {
+  for (var i = 1; i < 6; i++) {
     function close(i) {
       setTimeout(() => {
         console.log(i);
@@ -37,14 +37,14 @@ async function double(number, increase) {
   return value;
 }
 
-async function run() {
+async function runs() {
   let result;
   result = await double(5, 0);
   result = await double(10, result);
   result = await double(20, result);
   console.log(result);
 }
-// run();
+// runs();
 
 //  Data hiding and encapsulation using closure
 
@@ -81,9 +81,11 @@ const c3 = new count();
 // c3.decrement();
 
 // for (var a = 1; a <= 3; a++) {
-//   (
-//          function(index) { setTimeout(function() { console.log(index); }, a * 1000);
-//    })(a);
+//   (function (index) {
+//     setTimeout(function () {
+//       console.log(index);
+//     }, a * 1000);
+//   })(a);
 // }
 
 // for (var i = 1; i <= 3; i++) {
@@ -92,7 +94,8 @@ const c3 = new count();
 // }
 
 // for (var i = 1, j = 1; i <= 3; i++, j++) {
-//   setTimeout(function() { alert(this); }.bind(i), j * 100); }
+//   setTimeout(function() { alert(this); }.bind(i), j * 100); 
+// }
 
 // ! call method
 
@@ -144,7 +147,6 @@ const server = {
 // console.log(computer.turnOn.apply(server));
 
 // ! Bind method
-
 const module = {
   x: 42,
   getX: function () {
@@ -224,19 +226,18 @@ const users = [
 
 // ! Promise APIs
 
-const p1= new Promise((resolve, reject) => {
-  // setTimeout(()=>resolve("P1 success"), 1000)
-  setTimeout(()=>reject("P1 fail"), 1000)
-})
-const p2= new Promise((resolve, reject) => {
-  // setTimeout(()=>resolve("P2 success"), 3000)
-  setTimeout(()=>reject("P2 fail"), 3000)
-})
-const p3= new Promise((resolve, reject) => {
-  // setTimeout(()=>resolve("P3 success"), 2000)
-  setTimeout(()=>reject("P3 fail"), 2000)
-})
-
+// const p1= new Promise((resolve, reject) => {
+//   // setTimeout(()=>resolve("P1 success"), 1000)
+//   setTimeout(()=>reject("P1 fail"), 1000)
+// })
+// const p2= new Promise((resolve, reject) => {
+//   // setTimeout(()=>resolve("P2 success"), 3000)
+//   setTimeout(()=>reject("P2 fail"), 3000)
+// })
+// const p3= new Promise((resolve, reject) => {
+//   // setTimeout(()=>resolve("P3 success"), 2000)
+//   setTimeout(()=>reject("P3 fail"), 2000)
+// })
 
 // Promise.any([p1,p2,p3]).then(res => {
 //   console.log(res)
@@ -248,21 +249,21 @@ const p3= new Promise((resolve, reject) => {
 
 // ! async await
 
-// const p = new Promise((resolve) => {
-//   setTimeout(() => {
-//     resolve("Promise resolved")
-//   }, 10000);
-// })
+const p = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve("Promise resolved")
+  }, 5000);
+})
 
-// const p2 = new Promise((resolve,reject) =>
-// setTimeout(() => {
-//   resolve("Promise2 resolved")
-// }, 20000)
-// )
+const p2 = new Promise((resolve,reject) =>
+setTimeout(() => {
+  resolve("Promise2 resolved")
+}, 10000)
+)
 
-// async function getData(){
-//   return "AAyyyeee"
-// }
+async function getData(){
+  return "AAyyyeee"
+}
 
 // const data = getData();
 // console.log(data)
@@ -283,7 +284,6 @@ async function handlePromise() {
 
 // handlePromise()
 
-
 // ! Currying using bind method
 
 let multiply = function (x, y) {
@@ -303,14 +303,12 @@ let multiplyClosure = function (x) {
 
 // console.log(multiplyClosure(2)(0))
 
-
 // ! Infinite Currying
-let sum = function(a){
-    return function (b) {
-
-        if(b) return sum(a+b);
-        return a;
-    }
-}
+let sum = function (a) {
+  return function (b) {
+    if (b) return sum(a + b);
+    return a;
+  };
+};
 
 // console.log(sum(1)(2)(3)(4)())
