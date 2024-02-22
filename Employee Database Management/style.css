@@ -1,21 +1,19 @@
+/* Initial Structural CSS - START */
 :root {
   --btn: #dbdbdb;
   --btn-hover: #cacaca;
   --item-bg: #f0f0f0;
   --modal-bg: rgba(141, 141, 141, 0.541);
 }
-
 body {
   font-family: sans-serif;
   padding: 0 10px;
 }
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 .header > button {
   padding: 10px 15px;
   border-radius: 20px;
@@ -23,11 +21,9 @@ body {
   background-color: var(--btn);
   cursor: pointer;
 }
-
 .header > button:hover {
   background-color: var(--btn-hover);
 }
-
 .employees {
   display: flex;
 }
@@ -36,20 +32,20 @@ body {
   overflow-y: scroll;
   height: 450px;
 }
-.employee-list-container {
+.employees__names {
   width: 30%;
 }
-.employee-selected-info {
+.employees__single {
   width: 70%;
 }
-.employee-list-container,
-.employee-selected-info {
+.employees__names,
+.employees__single {
   padding: 10px;
   display: flex;
   flex-direction: column;
 }
-.employee-name-title,
-.employee-selected-title {
+.employees__names--title,
+.employees__single--title {
   padding-bottom: 10px;
   margin-bottom: 5px;
   text-align: center;
@@ -58,11 +54,11 @@ body {
 /* Initial Structural CSS - END */
 
 /* Render all Employees - START */
-.employee-list {
+.employees__names--list {
   display: flex;
   flex-direction: column;
 }
-.employee-list--item {
+.employees__names--item {
   cursor: pointer;
   padding: 10px 15px;
   margin-bottom: 5px;
@@ -73,26 +69,26 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.employee-list--item:hover,
+.employees__names--item:hover,
 .selected {
   background-color: var(--btn);
 }
 /* Render all Employees - END */
 
 /* Render Single Employee - START */
-.employee-selected-info--heading {
+.employees__single--heading {
   text-align: center;
   font-size: 25px;
   text-transform: uppercase;
   padding: 5px;
 }
-.employee-selected-info--info {
+.employees__single--info {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
-.employee-selected-info--info > img {
+.employees__single--info > img {
   width: 250px;
   height: 250px;
   object-fit: contain;
