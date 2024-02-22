@@ -2,17 +2,16 @@ const boardSize = 3;
 const getParent = document.querySelector(".tic-tac-toe");
 let player = "X";
 let board = [];
-let boardMap={};
-
-
-
-
-
-
+let boardMap = {};
+let options = ["+", "*", "-"];
 
 createBoard();
 addListener();
 
+function getRandomOption() {
+  const randomIndex = Math.floor(Math.random() * 10) % 3;
+  return options[randomIndex];
+}
 function updateGameData(row, col, value) {
   if (!board[row]) {
     board[row] = [];
@@ -20,7 +19,6 @@ function updateGameData(row, col, value) {
   board[row][col] = value;
   if (getWinner()) console.log("Won", player);
 }
-
 
 // ! optimise it using hashmap
 function getWinner() {
@@ -59,16 +57,27 @@ function checkLine(arr) {
   return arr.every((data) => data && arr[0] === data);
 }
 
+function handleOnClick(e) {
+  let option = getRandomOption();
+
+  const rowNo = e.target.dataset.row;
+  const colNo = e.target.dataset.col;
+
+  let printVal = player;
+
+  if (option === "*") {
+    printVal = "*";
+  }
+  e.target.innerText = printVal;
+
+  updateGameData(rowNo, colNo, player);
+  if (option !== "+") changePlayer();
+}
+
 function addListener() {
   getParent.addEventListener("click", (e) => {
     if (e.target.classList.contains("cell") && !e.target.innerText) {
-      e.target.innerText = player;
-
-      const rowNo = e.target.dataset.row;
-      const colNo = e.target.dataset.col;
-
-      updateGameData(rowNo, colNo, player);
-      changePlayer();
+      handleOnClick(e);
     }
   });
 }
