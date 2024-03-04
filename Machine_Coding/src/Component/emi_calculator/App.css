@@ -1,0 +1,27 @@
+.emi__calculator{
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slider{
+  width: 100%;
+}
+
+.lables{
+  display: flex;
+  justify-content: space-between;
+}
+.tenure__list{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.tenure__selected {
+  outline: none;
+  background-color: rgb(31, 84, 122);
+  text-align: center;
+}
