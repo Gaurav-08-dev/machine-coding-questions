@@ -10,10 +10,15 @@ const OtpInput = ({
   const [otp, setOtp] = useState(new Array(length).fill(""));
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
+
+
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
+
+    
     const value = e.target.value;
     if (isNaN(Number(value))) return;
 

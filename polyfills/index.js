@@ -146,9 +146,9 @@ let func = (obj, parent, finalObject) => {
   }
 };
 
-// func(user,'user',finalObject)
+func(user,'user',finalObject)
 
-// console.log(finalObject)
+console.log(finalObject)
 
 // ! Debouncing
 let counter = 0;
@@ -164,7 +164,7 @@ const debounce = (func, delay) => {
     const context = this;
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
-      timer = null;
+      // timer = null;
       func.apply(context, ...args);
     }, delay);
   };

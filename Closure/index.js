@@ -94,7 +94,7 @@ const c3 = new count();
 // }
 
 // for (var i = 1, j = 1; i <= 3; i++, j++) {
-//   setTimeout(function() { alert(this); }.bind(i), j * 100); 
+//   setTimeout(function() { console.log(this); }.bind(i), j * 100); 
 // }
 
 // ! call method
@@ -168,8 +168,8 @@ setTimeout(() => {
 
 // while(x){
 //   if(x){
-//    count++;
-//    console.log(count)
+//    counts++;
+//    console.log(counts)
 //   }
 // }
 
@@ -226,20 +226,20 @@ const users = [
 
 // ! Promise APIs
 
-// const p1= new Promise((resolve, reject) => {
-//   // setTimeout(()=>resolve("P1 success"), 1000)
-//   setTimeout(()=>reject("P1 fail"), 1000)
-// })
-// const p2= new Promise((resolve, reject) => {
-//   // setTimeout(()=>resolve("P2 success"), 3000)
-//   setTimeout(()=>reject("P2 fail"), 3000)
-// })
-// const p3= new Promise((resolve, reject) => {
-//   // setTimeout(()=>resolve("P3 success"), 2000)
-//   setTimeout(()=>reject("P3 fail"), 2000)
-// })
+const p1= new Promise((resolve, reject) => {
+  setTimeout(()=>resolve("P1 success"), 1000)
+  // setTimeout(()=>reject("P1 fail"), 1000)
+})
+const pr2= new Promise((resolve, reject) => {
+  setTimeout(()=>resolve("P2 success"), 3000)
+  // setTimeout(()=>reject("P2 fail"), 3000)
+})
+const p3= new Promise((resolve, reject) => {
+  setTimeout(()=>resolve("P3 success"), 2000)
+  // setTimeout(()=>reject("P3 fail"), 2000)
+})
 
-// Promise.any([p1,p2,p3]).then(res => {
+// Promise.race([p1,pr2,p3]).then(res => {
 //   console.log(res)
 // })
 // .catch(err => {
@@ -282,7 +282,7 @@ async function handlePromise() {
   console.log(res2);
 }
 
-// handlePromise()
+handlePromise()
 
 // ! Currying using bind method
 
