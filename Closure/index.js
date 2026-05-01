@@ -40,9 +40,11 @@ async function double(number, increase) {
 async function runs() {
   let result;
   result = await double(5, 0);
+  
   result = await double(10, result);
+  
   result = await double(20, result);
-  console.log(result);
+  
 }
 // runs();
 
@@ -201,6 +203,32 @@ Array.prototype.myMap = function (logic) {
 //   })
 // );
 
+// ! polyfill for filter
+Array.prototype.myFilter = function(condition){
+    const result=[];
+    for(let i=0;i<this.length;i++){
+        if(condition(this[i])) result.push(this[i])
+    }
+    return result;
+}
+
+// ! polyfill for reduce
+Array.prototype.myReduce = function(callback,initValue){
+    const array=this;
+    let accumulator = initValue;
+    let startIndex=0;
+    
+    if(accumulator === undefined){
+        accumulator = array[0];
+        startIndex=1;
+    }
+    
+    for(let i=startIndex;i<array.length;i++){
+        accumulator=callback(accumulator,array[i],i,array)
+    }
+    return accumulator;
+    }
+
 // ! reduce method
 // console.log(
 //   arr.reduce((acc, counter) => {
@@ -312,3 +340,71 @@ let sum = function (a) {
 };
 
 // console.log(sum(1)(2)(3)(4)())
+
+
+
+// RATE LIMITING PROBLEM
+
+// class RateLimiter {
+//     constructor(limit = 10, windowSize=60000) {
+//         this.limit = limit;
+//         this.windowSize = windowSize;
+//         this.userRequests = new Map();
+//     }
+    
+//     canMakeRequest(userId){
+//         const now = Date.now();
+        
+//         if(!this.userRequests.has(userId)){
+//             this.userRequests.set(userId,[])
+//         }
+        
+//         const request = this.userRequests.get(userId);
+        
+//         // remove older than 60sec
+//         while(request.length > 0 && now - request[0] >= this.windowSize){
+//             request.shift()
+//         }
+        
+//         if(request.length >= this.limit){
+//             return false;
+//         }
+        
+//         request.push(now);
+//         return true;
+//     }
+// }
+
+// const limiter=  new RateLimiter()
+// console.log(limiter.canMakeRequest("user1"));
+
+//!  Call polyfill
+
+Function.prototype.myCall = function(context,...args){
+    context = context || this
+    const fnSymbol = Symbol()
+    context[fnSymbol] = this;
+    const result = context[fnSymbol](...args);
+    delete context[fnSymbol];
+    return result;
+}
+
+//! apply polyfill
+
+Function.prototype.myApply = function(context,args=[]){
+    context= context || this;
+    const fnSymbol = Symbol()
+    context[fnSymbol] = this;
+    const result = context[fnSymbol](...args);
+    delete context[fnSymbol]
+    return result;
+}
+
+//! Bind polyfill
+
+Function.prototype.myBind = function(context,...bindArgs){
+    const originalFn = this;
+    return function(...args){
+        return originalFn.apply(context, [...bindArgs,...args])
+    }
+}
